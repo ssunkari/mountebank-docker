@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "6bcbcdee-d45a-48d7-b1e0-7a5a8ef93dfe",
+		"name": "1) MB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GeneralOperations",
+			"description": "",
+			"item": [
+				{
+					"name": "Create Basic Imposter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "44222181-ee17-4351-9652-a0845c1d64f1",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    // assert that the status code is 200",
+									"    pm.response.to.have.status(201);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"port\": 2000,\r\n  \"protocol\": \"http\",\r\n  \"name\": \"SimpleImposter\",\r\n  \"stubs\": [{\r\n    \"responses\": [{\r\n      \"is\": {\r\n        \"statusCode\": 200, \r\n        \"headers\": {\"Content-Type\": \"application/json\"},\r\n        \"body\": {\r\n          \"products\": [\r\n            {\r\n              \"id\": \"2599b7f4\",\r\n              \"name\": \"The Midas Dogbowl\",\r\n              \"description\": \"Pure gold\"\r\n            },\r\n            {\r\n              \"id\": \"e1977c9e\",\r\n              \"name\": \"Fishtank Amore\",\r\n              \"description\": \"Show your fish some love\"\r\n            }\r\n          ]\r\n        }\r\n      }\r\n    }]\r\n  }]\r\n}"
+						},
+						"url": {
+							"raw": "http://{{mountebank}}:2525/imposters",
+							"protocol": "http",
+							"host": [
+								"{{mountebank}}"
+							],
+							"port": "2525",
+							"path": [
+								"imposters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Imposter With Predicate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "44222181-ee17-4351-9652-a0845c1d64f1",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    // assert that the status code is 200",
+									"    pm.response.to.have.status(201);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"port\": 2001,\r\n  \"protocol\": \"http\",\r\n  \"name\": \"simpleStub\",\r\n  \"stubs\": [{\r\n      \"predicates\": [\r\n        {\r\n          \"equals\": {\r\n            \"method\": \"GET\",\r\n            \"path\": \"/customers\"\r\n          }\r\n        }\r\n      ],\r\n    \"responses\": [{\r\n      \"is\": {\r\n        \"statusCode\": 200, \r\n        \"headers\": {\"Content-Type\": \"application/json\"},\r\n        \"body\": {\r\n          \"products\": [\r\n            {\r\n              \"id\": \"2599b7f4\",\r\n              \"name\": \"The Midas Dogbowl\",\r\n              \"description\": \"Pure gold\"\r\n            },\r\n            {\r\n              \"id\": \"e1977c9e\",\r\n              \"name\": \"Fishtank Amore\",\r\n              \"description\": \"Show your fish some love\"\r\n            }\r\n          ]\r\n        }\r\n      }\r\n    }]\r\n  }]\r\n}"
+						},
+						"url": {
+							"raw": "http://{{mountebank}}:2525/imposters",
+							"protocol": "http",
+							"host": [
+								"{{mountebank}}"
+							],
+							"port": "2525",
+							"path": [
+								"imposters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Imposter With Response Injection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "16b6d83f-89c6-4508-95f5-4459641be367",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    // assert that the status code is 200",
+									"    pm.response.to.have.status(201);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"port\": 2002,\r\n  \"protocol\": \"http\",\r\n  \"name\": \"origin\",\r\n  \"stubs\": [{\r\n    \"responses\": [{ \"inject\": \"function (request, state, logger) {\\n    logger.info('origin called');\\n    state.requests = state.requests || 0;\\n    state.requests += 1;\\n    return {\\n      headers: {\\n        'Content-Type': 'application/json'\\n      },\\n      body: JSON.stringify({ count: state.requests })\\n    };\\n}\" }]\r\n  }]\r\n}"
+						},
+						"url": {
+							"raw": "http://{{mountebank}}:2525/imposters",
+							"protocol": "http",
+							"host": [
+								"{{mountebank}}"
+							],
+							"port": "2525",
+							"path": [
+								"imposters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List All Imposters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a83aac7-2c75-4fa5-95bb-a853b9ab4db5",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    // assert that the status code is 200",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://{{mountebank}}:2525/imposters",
+							"protocol": "http",
+							"host": [
+								"{{mountebank}}"
+							],
+							"port": "2525",
+							"path": [
+								"imposters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Config",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "607b1db2-c886-4a3e-bb58-9f4cbf8480f7",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    // assert that the status code is 200",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://{{mountebank}}:2525/config",
+							"protocol": "http",
+							"host": [
+								"{{mountebank}}"
+							],
+							"port": "2525",
+							"path": [
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bc7cacab-0463-446d-a595-f7076de3fb47",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    // assert that the status code is 200",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://{{mountebank}}:2525/logs?startIndex=0&endIndex=10",
+							"protocol": "http",
+							"host": [
+								"{{mountebank}}"
+							],
+							"port": "2525",
+							"path": [
+								"logs"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "0"
+								},
+								{
+									"key": "endIndex",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Single Imposter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4f221e6d-1641-4dcd-898f-ef465a1f6838",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    // assert that the status code is 200",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://{{mountebank}}:2525/imposters/2000",
+							"protocol": "http",
+							"host": [
+								"{{mountebank}}"
+							],
+							"port": "2525",
+							"path": [
+								"imposters",
+								"2000"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3c9b65a1-86ab-4a73-9b7d-7eefd55299bb",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "6279cfed-fdc9-4d35-9f55-fb89fd7ae636",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}

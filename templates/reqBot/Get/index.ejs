@@ -1,0 +1,9 @@
+function (request, state, logger,callback) {
+  return callback({
+        "statusCode": 200,
+         headers: {
+            'Content-Type': 'application/json'
+        },
+        "body":  request.headers["id"]
+    });
+}

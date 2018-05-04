@@ -1,0 +1,21 @@
+{
+    "port": 2005,
+    "protocol": "http",
+    "name": "reqBot",
+    "stubs": [      
+        {
+            "predicates": [
+                {
+                    "equals": {
+                        "method": "GET",
+                        "path": "/reqbot"                       
+                    }
+                }             
+            ],          
+            "responses": [{
+                "inject": "<%- stringify(filename, './reqBot/Get/index.ejs') %>"
+         }]
+        } 
+        
+    ]
+}
