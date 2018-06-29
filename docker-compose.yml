@@ -6,5 +6,5 @@ services:
     tty: true
     hostname: mountebank
     ports:
-    - 2525:2525
+    - 80:2525
     - 2000-2005:2000-2005
