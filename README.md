@@ -19,4 +19,3 @@ and then visiting [localhost:2525](http://localhost:2525).
 the imposters loaded automatically, the multi stage docker file validates the functionality of mountebank in the build stage by running automated tests to make sure imposters are fully functional and can be extended to verify javascript injections work for your imposters. Newman cli is used for running automated tests
 
     npx newman run /postman.json --global-var "mountebank=localhost" --global-var "port=2525"
-  
