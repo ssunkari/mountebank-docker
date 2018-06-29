@@ -16,12 +16,7 @@ Running mountebank is achieved by:
 
 and then visiting [localhost:2525](http://localhost:2525).
 
-If you wish to load your imposters automatically, mount your imposters as a
-volume and bind the necessary ports:
+the imposters loaded automatically, the multi stage docker file validates the functionality of mountebank in the build stage by running automated tests to make sure imposters are fully functional and can be extended to verify javascript injections work for your imposters. Newman cli is used for running automated tests
 
-    docker run \
-        -v ./templates:/imposters \
-        [-p IMPOSTER_1_PORT:IMPOSTER_1_PORT ...] \
-        -p 2525:2525 \
-        -d ssunkari/mountebank \
-        --configfile /imposters/imposters.ejs --allowInjection
+    npx newman run /postman.json --global-var "mountebank=localhost" --global-var "port=2525"
+  
